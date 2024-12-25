@@ -1,39 +1,49 @@
-import sys
-import speech_recognition as sr
-import os
 import pyttsx3
+import speech_recognition as sr
 import webbrowser
-
 
 def say(text):
     engine = pyttsx3.init()
     engine.say(text)
     engine.runAndWait()
 
-
 def print_hi(name):
     print(f'Hi, {name}')
 
-def takeCommand():
+def takecommand():
     r = sr.Recognizer()
     with sr.Microphone() as source:
-        # r.pause_threshold =  0.6
+        r.pause_threshold = 1
         audio = r.listen(source)
         try:
-            print("Recognizing...")
-            query = r.recognize_google(audio, language="en-in")
+            query = r.recognize_google(audio,language='en-in')
             print(f"User said: {query}")
             return query
         except Exception as e:
-            return "Some Error Occurred. Sorry from Jarvis"
+            return "Some error occured: from Jarvis AI"
 
 
 if __name__ == "__main__":
-    say("Hello, I am Jarvis AI")
-    print("Listening...")
-    query = takeCommand()
-    if "open youtube" in query:
-        webbrowser.open("https://youtube.com")
-    else:
-        say(f"Sorry, I don't understand {query} Sir")
+    say("Hello, I am Jarvis Sir")
+    while True:
+        print("Listening")
+        query = takecommand()
+        if "quit" in query.lower() or "exit" in query.lower():
+            say("Goodbye Sir, shutting down Jarvis.")
+            break
+        sites = [["youtube","https://www.youtube.com"],
+                 ["wikipedia","https://www.wikipedia.com"],
+                 ["google","https://www.google.com"],
+                 ["instagram","https://www.instagram.com"]]
+        for site in sites:
+            if f"open {site[0]}".lower() in query.lower():
+                say(f"Opening {site[0]} Sir...")
+                webbrowser.open(site[1])
 
+            elif "quit" in query.lower() or "exit" in query.lower():
+                say("Goodbye Sir, shutting down Jarvis.")
+                break
+
+
+
+        # say(query)
