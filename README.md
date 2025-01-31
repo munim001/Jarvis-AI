@@ -1,0 +1,2 @@
+install speechrecognition library
+install openai
